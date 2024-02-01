@@ -1,19 +1,20 @@
+using Microsoft.FeatureManagement;
 using WebAppSqlServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = "Endpoint=https://appconfiguration3000.azconfig.io;Id=vPw7;Secret=pnP//wgpxv/B/cYxuei2oQBoJY+O2a3MLkFP0CO0Htc=";
 
-builder.Host.ConfigureAppConfiguration(x =>
-{
-    x.AddAzureAppConfiguration(connectionString);
-});
+builder.Configuration.AddAzureAppConfiguration(options => 
+    options.Connect(connectionString).UseFeatureFlags());
 
 builder.Services.AddScoped<IProductService, ProductService>();
 
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddFeatureManagement();
 
 var app = builder.Build();
 

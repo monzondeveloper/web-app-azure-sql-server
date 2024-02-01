@@ -4,8 +4,17 @@
     ViewData["Title"] = "Home page";
 }
 
+
 <div class="text-center">
-    <h1 class="display-4">This is a List of Products Updated</h1>
+
+    @if (Model.IsBeta)
+    {
+        <h1 class="display-4">This is a List of Products Beta</h1>
+    }else
+    {
+        <h1 class="display-4">This is a List of Products Official</h1>
+    }
+
     <table>
         <thead>
             <tr>

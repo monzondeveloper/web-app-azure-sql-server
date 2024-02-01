@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using Microsoft.FeatureManagement;
+using System.Data.SqlClient;
 using WebAppSqlServer.Models;
 
 namespace WebAppSqlServer.Services
@@ -6,10 +7,20 @@ namespace WebAppSqlServer.Services
     public class ProductService : IProductService
     {
         private readonly IConfiguration _configuration;
+        private readonly IFeatureManager _featureManager;
 
-        public ProductService(IConfiguration configuration)
+        public ProductService(IConfiguration configuration, IFeatureManager featureManager)
         {
             _configuration = configuration;
+            _featureManager = featureManager;
+        }
+
+        public async Task<bool> IsBeta()
+        {
+            if (await _featureManager.IsEnabledAsync("beta"))
+                return true;
+
+            return false;
         }
 
         public List<Product> GetProducts()
